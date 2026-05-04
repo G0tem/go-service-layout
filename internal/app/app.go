@@ -73,23 +73,92 @@ func Run(ctx context.Context, c config.Config) (err error) {
 	httpServer := http_server.New(deps.RouterHTTP, c.HTTP.Port)
 	defer httpServer.Close()
 
-	waiting(httpServer)
+    // Health checker
+    healthChecker := healthcheck.New(c.HealthCheck)
+    healthChecker.Start()
+    defer healthChecker.Stop()
+
+    // Rate limiting middleware
+    if c.RateLimit.Enabled {
+        deps.RouterHTTP.Use(ratelimit.RateLimiterMiddleware(c.RateLimit))
+        log.Info().
+            Int("rps", c.RateLimit.RequestsPerSecond).
+            Int("burst", c.RateLimit.Burst).
+            Msg("Rate limiting enabled")
+        }
+
+    waiting(httpServer, healthChecker, deps.KafkaReader)
 
 	return nil
 }
 
-func waiting(httpServer *http_server.Server) {
+func waiting(httpServer *http_server.Server, healthChecker *healthcheck.HealthChecker, kafkaReader *kafka_reader.Reader) {
 	log.Info().Msg("App started!")
 
-	wait := make(chan os.Signal, 1)
-	signal.Notify(wait, os.Interrupt, syscall.SIGTERM)
+	// Graceful shutdown context
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-	select {
-	case i := <-wait:
-		log.Info().Msg("App got signal: " + i.String())
-	case err := <-httpServer.Notify():
-		log.Error().Err(err).Msg("App got notify: httpServer.Notify")
+	var wg sync.WaitGroup
+	shutdownCh := make(chan struct{})
+
+	// Wait for shutdown signal
+	wg.Add(1)
+	go func() {
+			defer wg.Done()
+			wait := make(chan os.Signal, 1)
+			signal.Notify(wait, os.Interrupt, syscall.SIGTERM)
+
+			select {
+			case i := <-wait:
+					log.Info().Str("signal", i.String()).Msg("Received shutdown signal")
+			case err := <-httpServer.Notify():
+					if err != nil {
+							log.Error().Err(err).Msg("HTTP server error")
+					}
+			}
+
+			close(shutdownCh)
+	}()
+
+	// Wait for shutdown
+	<-shutdownCh
+
+	log.Info().Msg("App is stopping... Starting graceful shutdown")
+
+	// Create shutdown context with timeout
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer shutdownCancel()
+
+	// Shutdown health checker first
+	log.Info().Msg("Stopping health checker...")
+	healthChecker.Stop()
+
+	// Shutdown HTTP server
+	log.Info().Msg("Shutting down HTTP server...")
+	if err := httpServer.Shutdown(shutdownCtx); err != nil {
+			log.Error().Err(err).Msg("HTTP server shutdown error")
 	}
 
-	log.Info().Msg("App is stopping...")
+	// Shutdown Kafka reader
+	log.Info().Msg("Shutting down Kafka reader...")
+	if err := kafkaReader.Shutdown(shutdownCtx); err != nil {
+			log.Error().Err(err).Msg("Kafka reader shutdown error")
+	}
+
+	// Wait for all goroutines to finish with timeout
+	done := make(chan struct{})
+	go func() {
+			wg.Wait()
+			close(done)
+	}()
+
+	select {
+	case <-done:
+			log.Info().Msg("All goroutines finished gracefully")
+	case <-time.After(5 * time.Second):
+			log.Warn().Msg("Timeout waiting for goroutines to finish")
+	}
+
+	log.Info().Msg("Graceful shutdown completed")
 }

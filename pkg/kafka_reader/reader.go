@@ -26,8 +26,31 @@ func New(c Config) (*Reader, error) {
 	return &Reader{Reader: r}, nil
 }
 
+// Shutdown gracefully shuts down the Kafka reader with a timeout
+func (r *Reader) Shutdown(ctx context.Context) error {
+	log.Info().Msg("Shutting down Kafka reader...")
+
+	done := make(chan error, 1)
+	go func() {
+			done <- r.Reader.Close()
+	}()
+
+	select {
+	case err := <-done:
+		if err != nil {
+			log.Error().Err(err).Msg("Kafka reader shutdown error")
+			return fmt.Errorf("kafka reader shutdown: %w", err)
+		}
+		log.Info().Msg("Kafka reader shut down successfully")
+		return nil
+	case <-ctx.Done():
+		log.Warn().Msg("Kafka reader shutdown timeout")
+		return fmt.Errorf("shutdown timeout: %w", ctx.Err())
+	}
+}
+
 func (r *Reader) Close() {
-	err := r.Reader.Close()
+	err := r.Shutdown(context.Background())
 	if err != nil {
 		log.Error().Err(err).Msg("kafka_reader.Close")
 	}

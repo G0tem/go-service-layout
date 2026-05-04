@@ -31,15 +31,12 @@ type Config struct {
 	Sentry      sentry.Config
 	OTEL        otel.Config
 	JWT         jwt.Config
+	HealthCheck healthcheck.Config
+	RateLimit   ratelimit.Config
 }
 
 func New() (Config, error) {
 	var config Config
-
-	// err := godotenv.Load(".env")
-	// if err != nil {
-	// 	return config, fmt.Errorf("godotenv.Load: %w", err)
-	// }
 
 	err := envconfig.Process("", &config)
 	if err != nil {
