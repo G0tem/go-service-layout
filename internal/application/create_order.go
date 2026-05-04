@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/G0tem/go-service-gin/internal/domain/order"
-	"github.com/G0tem/go-service-gin/internal/domain/ports"
-	"github.com/G0tem/go-service-gin/internal/otel"
+	"github.com/G0tem/go-service-layout/internal/domain/order"
+	"github.com/G0tem/go-service-layout/internal/domain/ports"
+	"github.com/G0tem/go-service-layout/internal/otel"
 	"github.com/google/uuid"
 )
 

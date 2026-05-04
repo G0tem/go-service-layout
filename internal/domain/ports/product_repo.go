@@ -3,7 +3,7 @@ package ports
 import (
 	"context"
 
-	"github.com/G0tem/go-service-gin/internal/domain/product"
+	"github.com/G0tem/go-service-layout/internal/domain/product"
 )
 
 // ProductRepository — интерфейс репозитория для работы с товарами

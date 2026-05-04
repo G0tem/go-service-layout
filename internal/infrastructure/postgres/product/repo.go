@@ -2,10 +2,9 @@ package product
 
 import (
 	"context"
-	"time"
 
-	"github.com/G0tem/go-service-gin/internal/domain/product"
-	"github.com/G0tem/go-service-gin/internal/domain/ports"
+	"github.com/G0tem/go-service-layout/internal/domain/ports"
+	"github.com/G0tem/go-service-layout/internal/domain/product"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )

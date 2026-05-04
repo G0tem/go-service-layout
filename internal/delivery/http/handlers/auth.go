@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/G0tem/go-service-gin/internal/domain/ports"
+	"github.com/G0tem/go-service-layout/internal/domain/ports"
 	"github.com/gin-gonic/gin"
 )
 

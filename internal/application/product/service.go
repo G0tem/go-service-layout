@@ -3,8 +3,8 @@ package product
 import (
 	"context"
 
-	"github.com/G0tem/go-service-gin/internal/domain/product"
-	"github.com/G0tem/go-service-gin/internal/domain/ports"
+	"github.com/G0tem/go-service-layout/internal/domain/ports"
+	"github.com/G0tem/go-service-layout/internal/domain/product"
 	"github.com/google/uuid"
 )
 

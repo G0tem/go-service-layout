@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/G0tem/go-service-gin/internal/application/product"
+	"github.com/G0tem/go-service-layout/internal/application/product"
 	"github.com/gin-gonic/gin"
 )
 
@@ -213,9 +213,9 @@ func (h *ProductHandler) List(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"items": result,
-		"total": len(products),
-		"limit": limit,
+		"items":  result,
+		"total":  len(products),
+		"limit":  limit,
 		"offset": offset,
 	})
 }

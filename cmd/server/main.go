@@ -9,16 +9,16 @@ import (
 	"syscall"
 	"time"
 
-	_ "github.com/G0tem/go-service-gin/docs"
-	"github.com/G0tem/go-service-gin/internal/application"
-	http_router "github.com/G0tem/go-service-gin/internal/delivery/http"
-	handler "github.com/G0tem/go-service-gin/internal/delivery/http/handlers"
-	"github.com/G0tem/go-service-gin/internal/infrastructure/jwt"
-	"github.com/G0tem/go-service-gin/internal/infrastructure/postgres"
-	infra_product "github.com/G0tem/go-service-gin/internal/infrastructure/postgres/product"
-	"github.com/G0tem/go-service-gin/internal/infrastructure/rabbitmq"
-	"github.com/G0tem/go-service-gin/internal/otel"
-	"github.com/G0tem/go-service-gin/pkg/config"
+	_ "github.com/G0tem/go-service-layout/docs"
+	"github.com/G0tem/go-service-layout/internal/application"
+	http_router "github.com/G0tem/go-service-layout/internal/delivery/http"
+	handler "github.com/G0tem/go-service-layout/internal/delivery/http/handlers"
+	"github.com/G0tem/go-service-layout/internal/infrastructure/jwt"
+	"github.com/G0tem/go-service-layout/internal/infrastructure/postgres"
+	infra_product "github.com/G0tem/go-service-layout/internal/infrastructure/postgres/product"
+	"github.com/G0tem/go-service-layout/internal/infrastructure/rabbitmq"
+	"github.com/G0tem/go-service-layout/internal/otel"
+	"github.com/G0tem/go-service-layout/pkg/config"
 )
 
 // @title Order Service API

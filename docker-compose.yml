@@ -1,8 +1,8 @@
 version: "3.9"
 
 services:
-  gin-app:
-    container_name: gin-app
+  app:
+    container_name: app
     build:
       context: .
       dockerfile: Dockerfile
@@ -17,10 +17,10 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
       redis: { condition: service_healthy }
-      rabbitmq: { condition: service_healthy }
-      jaeger: { condition: service_healthy }
+      # rabbitmq: { condition: service_healthy }
+      # jaeger: { condition: service_healthy }
     networks:
-      - gin_service_network
+      - go-service-layout-network
 
   postgres:
     image: postgres:15-alpine
@@ -39,7 +39,7 @@ services:
       timeout: 3s
       retries: 5
     networks:
-      - gin_service_network
+      - go-service-layout-network
 
   redis:
     image: redis:7-alpine
@@ -53,7 +53,7 @@ services:
       timeout: 3s
       retries: 5
     networks:
-      - gin_service_network
+      - go-service-layout-network
 
   redis-ui:
     container_name: redis-ui
@@ -66,7 +66,7 @@ services:
     depends_on:
       - redis
     networks:
-      - gin_service_network
+      - go-service-layout-network
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -83,24 +83,24 @@ services:
       timeout: 3s
       retries: 5
     networks:
-      - gin_service_network
+      - go-service-layout-network
 
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    container_name: jaeger
-    ports:
-      - "16686:16686"  # UI
-      - "4317:4317"    # OTLP gRPC
-      - "4318:4318"    # OTLP HTTP
-    environment:
-      - COLLECTOR_OTLP_ENABLED=true
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:16686"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-    networks:
-      - gin_service_network
+  # jaeger:
+  #   image: jaegertracing/all-in-one:latest
+  #   container_name: jaeger
+  #   ports:
+  #     - "16686:16686"  # UI
+  #     - "4317:4317"    # OTLP gRPC
+  #     - "4318:4318"    # OTLP HTTP
+  #   environment:
+  #     - COLLECTOR_OTLP_ENABLED=true
+  #   healthcheck:
+  #     test: ["CMD", "wget", "--spider", "http://localhost:16686"]
+  #     interval: 10s
+  #     timeout: 3s
+  #     retries: 5
+  #   networks:
+  #     - go-service-layout-network
 
   pgadmin:
     image: dpage/pgadmin4
@@ -118,7 +118,7 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - gin_service_network
+      - go-service-layout-network
 
   mongo-express:
     image: mongo-express
@@ -138,7 +138,7 @@ services:
       mongo-db:
         condition: service_healthy
     networks:
-      - gin_service_network
+      - go-service-layout-network
 
   mongo-db:
     image: mongo:8-noble
@@ -157,7 +157,7 @@ services:
     volumes:
       - gin-mongo-db_data:/data/db
     networks:
-      - gin_service_network
+      - go-service-layout-network
 
   tempo:
     image: grafana/tempo:latest  # grafana/tempo:2.6.1
@@ -170,7 +170,7 @@ services:
       - '3200:3200'  # HTTP API / ready endpoint
       - '4317:4317'  # OTLP gRPC
       - '4318:4318'  # OTLP HTTP
-    restart: unless-stopped
+    # restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:3200/ready"]
       interval: 10s
@@ -216,6 +216,6 @@ volumes:
   gin-pgadmin_data:
 
 networks:
-  gin_service_network:
+  go-service-layout-network:
     driver: bridge
-    name: gin_service_network
+    name: go-service-layout-network

@@ -1,4 +1,4 @@
-# go-serviсe-gin
+# go-service-layout
 
 ## Запуск
 

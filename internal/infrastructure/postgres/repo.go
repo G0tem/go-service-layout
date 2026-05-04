@@ -3,7 +3,7 @@ package postgres
 import (
 	"context"
 
-	"github.com/G0tem/go-service-gin/internal/domain/order"
+	"github.com/G0tem/go-service-layout/internal/domain/order"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

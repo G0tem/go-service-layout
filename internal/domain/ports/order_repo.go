@@ -3,7 +3,7 @@ package ports
 import (
 	"context"
 
-	"github.com/G0tem/go-service-gin/internal/domain/order"
+	"github.com/G0tem/go-service-layout/internal/domain/order"
 )
 
 type OrderRepository interface {

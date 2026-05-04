@@ -3,9 +3,9 @@ package handler
 import (
 	"net/http"
 
-	"github.com/G0tem/go-service-gin/internal/domain/order"
-	"github.com/G0tem/go-service-gin/internal/delivery/http/middleware"
-	usecase "github.com/G0tem/go-service-gin/internal/application"
+	usecase "github.com/G0tem/go-service-layout/internal/application"
+	"github.com/G0tem/go-service-layout/internal/delivery/http/middleware"
+	"github.com/G0tem/go-service-layout/internal/domain/order"
 	"github.com/gin-gonic/gin"
 )
 

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/G0tem/go-service-gin/internal/domain/ports"
+	"github.com/G0tem/go-service-layout/internal/domain/ports"
 	"github.com/gin-gonic/gin"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"

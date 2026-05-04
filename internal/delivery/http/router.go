@@ -3,11 +3,10 @@ package http_router
 import (
 	"time"
 
-	"github.com/G0tem/go-service-gin/internal/domain/ports"
-	handler "github.com/G0tem/go-service-gin/internal/delivery/http/handlers"
-	"github.com/G0tem/go-service-gin/internal/delivery/http/middleware"
-	app_product "github.com/G0tem/go-service-gin/internal/application/product"
-	infra_product "github.com/G0tem/go-service-gin/internal/infrastructure/postgres/product"
+	app_product "github.com/G0tem/go-service-layout/internal/application/product"
+	handler "github.com/G0tem/go-service-layout/internal/delivery/http/handlers"
+	"github.com/G0tem/go-service-layout/internal/delivery/http/middleware"
+	"github.com/G0tem/go-service-layout/internal/domain/ports"
 	"github.com/gin-gonic/gin"
 	promclient "github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"

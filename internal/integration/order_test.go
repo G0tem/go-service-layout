@@ -13,10 +13,10 @@ import (
 	testrabbitmq "github.com/testcontainers/testcontainers-go/modules/rabbitmq"
 	"github.com/testcontainers/testcontainers-go/wait"
 
-	"github.com/G0tem/go-service-gin/internal/domain/order"
-	pginfra "github.com/G0tem/go-service-gin/internal/infrastructure/postgres"
-	rmqinfra "github.com/G0tem/go-service-gin/internal/infrastructure/rabbitmq"
-	application "github.com/G0tem/go-service-gin/internal/application"
+	application "github.com/G0tem/go-service-layout/internal/application"
+	"github.com/G0tem/go-service-layout/internal/domain/order"
+	pginfra "github.com/G0tem/go-service-layout/internal/infrastructure/postgres"
+	rmqinfra "github.com/G0tem/go-service-layout/internal/infrastructure/rabbitmq"
 )
 
 func TestCreateOrderIntegration(t *testing.T) {
