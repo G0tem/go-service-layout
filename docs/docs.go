@@ -111,6 +111,15 @@ const docTemplate = `{
                     "apple"
                 ],
                 "summary": "DeleteApple",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "status: Apple delete",
