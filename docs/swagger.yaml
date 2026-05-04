@@ -1,21 +1,8 @@
 basePath: /api/v1
 definitions:
-  handler.LoginRequest:
+  dto.CreateAppleInput:
     properties:
-      email:
-        type: string
-      password:
-        minLength: 8
-        type: string
-    required:
-    - email
-    - password
-    type: object
-  order.CreateOrderCmd:
-    properties:
-      amount:
-        type: number
-      user_id:
+      name:
         type: string
     type: object
 host: localhost:8080
@@ -32,58 +19,23 @@ info:
   title: Order Service API
   version: "1.0"
 paths:
-  /auth/login:
+  /apples/create_apple:
     post:
       consumes:
       - application/json
-      description: Authenticate user and return JWT access token
+      description: Creates Apple
       parameters:
-      - description: User credentials
+      - description: Apple creation payload
         in: body
-        name: credentials
+        name: peoduct
         required: true
         schema:
-          $ref: '#/definitions/handler.LoginRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: access_token, token_type, expires_in
-          schema:
-            additionalProperties: true
-            type: object
-        "400":
-          description: invalid payload
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "401":
-          description: invalid credentials
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: User login
-      tags:
-      - auth
-  /orders:
-    post:
-      consumes:
-      - application/json
-      description: Creates a new order and publishes an event to RabbitMQ
-      parameters:
-      - description: Order creation payload
-        in: body
-        name: order
-        required: true
-        schema:
-          $ref: '#/definitions/order.CreateOrderCmd'
+          $ref: '#/definitions/dto.CreateAppleInput'
       produces:
       - application/json
       responses:
         "201":
-          description: 'status: order created & event published'
+          description: 'status: Apple created'
           schema:
             additionalProperties:
               type: string
@@ -108,9 +60,132 @@ paths:
             type: object
       security:
       - BearerAuth: []
-      summary: Create a new order
+      summary: CreateApple
       tags:
-      - orders
+      - apple
+  /apples/delete_apple/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Apple
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'status: Apple delete'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: invalid payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: DeleteApple
+      tags:
+      - apple
+  /apples/get_apple/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get Apple
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'status: Apple'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: invalid payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: GetApple
+      tags:
+      - apple
+  /apples/update_apple/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update Apple
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'status: Apple'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: invalid payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: UpdateApple
+      tags:
+      - apple
 schemes:
 - http
 - https

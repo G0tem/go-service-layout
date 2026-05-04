@@ -2,23 +2,15 @@ package main
 
 import (
 	"context"
-	"log"
-	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
 
+	"github.com/G0tem/go-service-layout/config"
 	_ "github.com/G0tem/go-service-layout/docs"
-	"github.com/G0tem/go-service-layout/internal/application"
-	http_router "github.com/G0tem/go-service-layout/internal/delivery/http"
-	handler "github.com/G0tem/go-service-layout/internal/delivery/http/handlers"
-	"github.com/G0tem/go-service-layout/internal/infrastructure/jwt"
-	"github.com/G0tem/go-service-layout/internal/infrastructure/postgres"
-	infra_product "github.com/G0tem/go-service-layout/internal/infrastructure/postgres/product"
-	"github.com/G0tem/go-service-layout/internal/infrastructure/rabbitmq"
-	"github.com/G0tem/go-service-layout/internal/otel"
-	"github.com/G0tem/go-service-layout/pkg/config"
+	"github.com/G0tem/go-service-layout/internal/app"
+	"github.com/G0tem/go-service-layout/pkg/logger"
+	"github.com/G0tem/go-service-layout/pkg/otel"
+	"github.com/G0tem/go-service-layout/pkg/sentry"
+	"github.com/rs/zerolog/log"
+	_ "go.uber.org/automaxprocs"
 )
 
 // @title Order Service API
@@ -42,80 +34,33 @@ import (
 // @name Authorization
 // @description Type "Bearer {token}" to authenticate
 func main() {
-	// 1. Загружаем конфиг (с валидацией!)
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatalf("❌ failed to load config: %v", err)
-	}
-
 	ctx := context.Background()
 
-	// 2. Инициализация трейсинга
-	shutdownTracer, err := otel.InitTracing(ctx, cfg.ServiceName, cfg.OTelTrace)
-	exitOnError(err, "otel tracing")
-	defer shutdownTracer(ctx)
-
-	// 3. Инициализация метрик
-	gatherer, metrics, meterProvider, err := otel.InitMetrics(ctx, cfg.ServiceName, cfg.OTelMetric)
-	exitOnError(err, "otel metrics")
-	if meterProvider != nil {
-		defer func() {
-			if err := meterProvider.Shutdown(ctx); err != nil {
-				log.Printf("⚠️ failed to shutdown meter provider: %v", err)
-			}
-		}()
-	}
-
-	// Инфраструктура
-	pool, err := postgres.NewPool(ctx, cfg.PostgresDSN)
-	exitOnError(err, "postgres")
-	defer pool.Close()
-
-	rmq, err := rabbitmq.NewClient(ctx, cfg.RabbitMQURL)
-	exitOnError(err, "rabbitmq")
-	defer rmq.Close()
-
-	// Domain & UseCases
-	orderRepo := postgres.NewOrderRepo(pool)
-	productRepo := infra_product.NewProductRepo(pool)
-	tm := jwt.NewManager(cfg.JWTSecret, cfg.AccessTokenTTL)
-	authHandler := handler.NewAuthHandler(tm)
-	createOrderUC := application.NewCreateOrderHandler(orderRepo, rmq, metrics)
-	orderHandler := handler.NewOrderHandler(createOrderUC)
-
-	router := http_router.NewRouter(orderHandler, authHandler, tm, gatherer, productRepo)
-
-	srv := &http.Server{
-		Addr:         cfg.HTTPAddr,
-		Handler:      router,
-		ReadTimeout:  cfg.ReadTimeout,
-		WriteTimeout: cfg.WriteTimeout,
-		IdleTimeout:  60 * time.Second,
-	}
-
-	// Graceful shutdown
-	go func() {
-		log.Printf("🚀 HTTP server listening on %s", cfg.HTTPAddr)
-		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("listen: %v", err)
-		}
-	}()
-
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
-	log.Println("⏳ shutting down server...")
-
-	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer shutdownCancel()
-	if err := srv.Shutdown(shutdownCtx); err != nil {
-		log.Fatalf("Server forced to shutdown: %v", err)
-	}
-	log.Println("✅ server stopped")
-}
-
-func exitOnError(err error, msg string) {
+	c, err := config.New()
 	if err != nil {
-		log.Fatalf("failed to init %s: %v", msg, err)
+		log.Fatal().Err(err).Msg("config.New")
 	}
+
+	logger.Init(c.Logger)
+
+	err = sentry.Init(c.Sentry)
+	if err != nil {
+		log.Error().Err(err).Msg("sentry.Init")
+	}
+
+	defer sentry.Close()
+
+	err = otel.Init(ctx, c.OTEL)
+	if err != nil {
+		log.Error().Err(err).Msg("otel.Init")
+	}
+
+	defer otel.Close()
+
+	err = app.Run(ctx, c)
+	if err != nil {
+		log.Fatal().Err(err).Msg("app.Run")
+	}
+
+	log.Info().Msg("App stopped!")
 }
