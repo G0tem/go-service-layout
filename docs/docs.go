@@ -24,9 +24,14 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/auth/login": {
+        "/apples/create_apple": {
             "post": {
-                "description": "Authenticate user and return JWT access token",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Creates Apple",
                 "consumes": [
                     "application/json"
                 ],
@@ -34,26 +39,28 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "apple"
                 ],
-                "summary": "User login",
+                "summary": "CreateApple",
                 "parameters": [
                     {
-                        "description": "User credentials",
-                        "name": "credentials",
+                        "description": "Apple creation payload",
+                        "name": "peoduct",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.LoginRequest"
+                            "$ref": "#/definitions/dto.CreateAppleInput"
                         }
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "access_token, token_type, expires_in",
+                    "201": {
+                        "description": "status: Apple created",
                         "schema": {
                             "type": "object",
-                            "additionalProperties": true
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
@@ -66,7 +73,16 @@ const docTemplate = `{
                         }
                     },
                     "401": {
-                        "description": "invalid credentials",
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -77,14 +93,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/orders": {
-            "post": {
+        "/apples/delete_apple/{id}": {
+            "delete": {
                 "security": [
                     {
                         "BearerAuth": []
                     }
                 ],
-                "description": "Creates a new order and publishes an event to RabbitMQ",
+                "description": "Delete Apple",
                 "consumes": [
                     "application/json"
                 ],
@@ -92,23 +108,146 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "orders"
+                    "apple"
                 ],
-                "summary": "Create a new order",
+                "summary": "DeleteApple",
+                "responses": {
+                    "200": {
+                        "description": "status: Apple delete",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "invalid payload",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/apples/get_apple/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get Apple",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "apple"
+                ],
+                "summary": "GetApple",
                 "parameters": [
                     {
-                        "description": "Order creation payload",
-                        "name": "order",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/order.CreateOrderCmd"
-                        }
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "status: order created \u0026 event published",
+                    "200": {
+                        "description": "status: Apple",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "invalid payload",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/apples/update_apple/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update Apple",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "apple"
+                ],
+                "summary": "UpdateApple",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status: Apple",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -148,29 +287,10 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handler.LoginRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string",
-                    "minLength": 8
-                }
-            }
-        },
-        "order.CreateOrderCmd": {
+        "dto.CreateAppleInput": {
             "type": "object",
             "properties": {
-                "amount": {
-                    "type": "number"
-                },
-                "user_id": {
+                "name": {
                     "type": "string"
                 }
             }
