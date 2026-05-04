@@ -1,6 +1,6 @@
 package v1
 
-import "net/http"
+import "github.com/gin-gonic/gin"
 
 // @Summary UpdateApple
 // @Description Update Apple
@@ -14,6 +14,6 @@ import "net/http"
 // @Failure 401 {object} map[string]string "unauthorized"
 // @Failure 500 {object} map[string]string "internal error"
 // @Router /apples/update_apple/{id} [put]
-func (h *Handlers) UpdateApple(w http.ResponseWriter, r *http.Request) {
+func (h *Handlers) UpdateApple(c *gin.Context) {
 
 }

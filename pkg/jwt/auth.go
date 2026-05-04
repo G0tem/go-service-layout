@@ -1,4 +1,4 @@
-package jwt_check
+package jwt
 
 import (
 	"context"

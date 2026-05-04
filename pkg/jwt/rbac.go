@@ -1,4 +1,4 @@
-package jwt_check
+package jwt
 
 import (
 	"net/http"
@@ -10,7 +10,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-// после jwt_check.JWTAuth
+// после jwt.JWTAuth
 func RequireRole(allowedRoles ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		claims := GetClaims(c)
@@ -39,7 +39,7 @@ func RequireRole(allowedRoles ...string) gin.HandlerFunc {
 	}
 }
 
-// после jwt_check.JWTAuth
+// после jwt.JWTAuth
 func RequireScope(requiredScopes ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		claims := GetClaims(c)

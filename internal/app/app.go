@@ -9,12 +9,13 @@ import (
 
 	"github.com/G0tem/go-service-layout/config"
 	"github.com/G0tem/go-service-layout/pkg/http_server"
+	jwt "github.com/G0tem/go-service-layout/pkg/jwt"
 	"github.com/G0tem/go-service-layout/pkg/kafka_reader"
 	"github.com/G0tem/go-service-layout/pkg/kafka_writer"
 	"github.com/G0tem/go-service-layout/pkg/postgres"
 	"github.com/G0tem/go-service-layout/pkg/redis"
 	"github.com/G0tem/go-service-layout/pkg/router"
-	"github.com/go-chi/chi/v5"
+	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 )
 
@@ -25,8 +26,11 @@ type Dependencies struct {
 	Redis       *redis.Client
 
 	// Controllers
-	RouterHTTP  *chi.Mux
+	RouterHTTP  *gin.Engine
 	KafkaReader *kafka_reader.Reader
+
+	// Auth
+	TokenManager jwt.TokenManager
 }
 
 func Run(ctx context.Context, c config.Config) (err error) {
@@ -50,6 +54,9 @@ func Run(ctx context.Context, c config.Config) (err error) {
 		return fmt.Errorf("redis.New: %w", err)
 	}
 	defer deps.Redis.Close()
+
+	// Auth
+	deps.TokenManager = jwt.NewManager(c.JWT.Secret, c.JWT.TTL)
 
 	// Controllers
 	deps.RouterHTTP = router.New()

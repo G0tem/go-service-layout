@@ -1,21 +1,21 @@
 package router
 
 import (
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-func New() *chi.Mux {
-	r := chi.NewRouter()
-	r.Use(middleware.Recoverer)
+func New() *gin.Engine {
+	r := gin.New()
+	r.Use(gin.Recovery())
 
-	r.Get("/live", probe)
-	r.Get("/ready", probe)
+	r.GET("/live", probe)
+	r.GET("/ready", probe)
 
 	return r
 }
 
-func probe(w http.ResponseWriter, _ *http.Request) {
-	w.WriteHeader(http.StatusOK)
+func probe(c *gin.Context) {
+	c.Status(http.StatusOK)
 }

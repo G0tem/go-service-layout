@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/G0tem/go-service-layout/pkg/http_server"
+	jwt "github.com/G0tem/go-service-layout/pkg/jwt"
 	"github.com/G0tem/go-service-layout/pkg/kafka_reader"
 	"github.com/G0tem/go-service-layout/pkg/kafka_writer"
 	"github.com/G0tem/go-service-layout/pkg/logger"
@@ -29,6 +30,7 @@ type Config struct {
 	Logger      logger.Config
 	Sentry      sentry.Config
 	OTEL        otel.Config
+	JWT         jwt.Config
 }
 
 func New() (Config, error) {

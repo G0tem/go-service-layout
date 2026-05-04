@@ -1,6 +1,6 @@
 package v1
 
-import "net/http"
+import "github.com/gin-gonic/gin"
 
 // @Summary DeleteApple
 // @Description Delete Apple
@@ -13,6 +13,6 @@ import "net/http"
 // @Failure 401 {object} map[string]string "unauthorized"
 // @Failure 500 {object} map[string]string "internal error"
 // @Router /apples/delete_apple/{id} [delete]
-func (h *Handlers) DeleteApple(w http.ResponseWriter, r *http.Request) {
+func (h *Handlers) DeleteApple(c *gin.Context) {
 
 }

@@ -14,6 +14,7 @@ func AppleDomain(d Dependencies) {
 		postgres.New(d.Postgres.Pool),
 		kafka_producer.New(d.KafkaWriter.Writer),
 		redis.New(d.Redis.Client),
+		d.TokenManager,
 	)
 
 	http_router.AppleRouter(d.RouterHTTP, appleUseCase)

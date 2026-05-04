@@ -1,4 +1,4 @@
-package jwt_check
+package jwt
 
 import (
 	"context"
@@ -7,6 +7,11 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 )
+
+type Config struct {
+	Secret string        `envconfig:"JWT_SECRET" required:"true"`
+	TTL    time.Duration `envconfig:"JWT_TTL"    default:"24h"`
+}
 
 type AuthClaims struct {
 	UserID string   `json:"sub"`
