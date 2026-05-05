@@ -2,6 +2,9 @@ package main
 
 import (
 	"context"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/G0tem/go-service-layout/config"
 	_ "github.com/G0tem/go-service-layout/docs"
@@ -34,7 +37,19 @@ import (
 // @name Authorization
 // @description Type "Bearer {token}" to authenticate
 func main() {
-	ctx := context.Background()
+	// Create root context with signal handling
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	// Setup signal handling
+	sigCh := make(chan os.Signal, 1)
+	signal.Notify(sigCh, os.Interrupt, syscall.SIGTERM)
+
+	go func() {
+		sig := <-sigCh
+		log.Info().Str("signal", sig.String()).Msg("Received shutdown signal")
+		cancel()
+	}()
 
 	c, err := config.New()
 	if err != nil {

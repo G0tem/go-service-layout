@@ -8,15 +8,19 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func AppleConsumer(reader *kafka_reader.Reader, uc *usecase.UseCase) {
-	ctx := context.Background()
-
+func AppleConsumer(ctx context.Context, reader *kafka_reader.Reader, uc *usecase.UseCase) {
 	for {
+		select {
+		case <-ctx.Done():
+			log.Info().Msg("Kafka consumer received shutdown signal")
+			return
+		default:
+		}
+
 		m, err := reader.FetchMessage(ctx)
 		if err != nil {
 			log.Error().Err(err).Msg("kafka_consumer.AppleConsumer: reader.FetchMessage")
-
-			break
+			return
 		}
 
 		// UseCase call here
