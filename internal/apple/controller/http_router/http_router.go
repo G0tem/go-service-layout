@@ -5,8 +5,9 @@ import (
 
 	ver1 "github.com/G0tem/go-service-layout/internal/apple/controller/http_router/v1"
 	"github.com/G0tem/go-service-layout/internal/apple/usecase"
-	jwt "github.com/G0tem/go-service-layout/pkg/jwt"
+	"github.com/G0tem/go-service-layout/pkg/jwt"
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -16,6 +17,7 @@ func AppleRouter(r *gin.Engine, uc *usecase.UseCase) {
 	{
 		// Health check
 		v1Group.GET("/healthz", func(c *gin.Context) {
+			log.Debug().Msg("healthz")
 			c.String(http.StatusOK, "ok")
 		})
 

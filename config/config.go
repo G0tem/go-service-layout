@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 
+	"github.com/G0tem/go-service-layout/pkg/healthcheck"
 	"github.com/G0tem/go-service-layout/pkg/http_server"
 	jwt "github.com/G0tem/go-service-layout/pkg/jwt"
 	"github.com/G0tem/go-service-layout/pkg/kafka_reader"
@@ -10,6 +11,7 @@ import (
 	"github.com/G0tem/go-service-layout/pkg/logger"
 	"github.com/G0tem/go-service-layout/pkg/otel"
 	"github.com/G0tem/go-service-layout/pkg/postgres"
+	"github.com/G0tem/go-service-layout/pkg/ratelimit"
 	"github.com/G0tem/go-service-layout/pkg/redis"
 	"github.com/G0tem/go-service-layout/pkg/sentry"
 	"github.com/kelseyhightower/envconfig"
@@ -31,15 +33,12 @@ type Config struct {
 	Sentry      sentry.Config
 	OTEL        otel.Config
 	JWT         jwt.Config
+	HealthCheck healthcheck.Config
+	RateLimit   ratelimit.Config
 }
 
 func New() (Config, error) {
 	var config Config
-
-	// err := godotenv.Load(".env")
-	// if err != nil {
-	// 	return config, fmt.Errorf("godotenv.Load: %w", err)
-	// }
 
 	err := envconfig.Process("", &config)
 	if err != nil {

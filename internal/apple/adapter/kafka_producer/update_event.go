@@ -6,6 +6,7 @@ import (
 
 	"github.com/G0tem/go-service-layout/internal/apple/entity"
 	"github.com/G0tem/go-service-layout/pkg/otel/tracer"
+	"github.com/rs/zerolog/log"
 	"github.com/segmentio/kafka-go"
 )
 
@@ -22,6 +23,8 @@ func (p *Producer) CreateEvent(ctx context.Context, e entity.CreateEvent) error 
 	if err != nil {
 		return fmt.Errorf("p.writer.WriteMessages: %w", err)
 	}
+
+	log.Debug().Msg("CreateEvent Kafka")
 
 	return nil
 }
