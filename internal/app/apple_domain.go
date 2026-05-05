@@ -1,6 +1,8 @@
 package app
 
 import (
+	"context"
+
 	"github.com/G0tem/go-service-layout/internal/apple/adapter/kafka_producer"
 	"github.com/G0tem/go-service-layout/internal/apple/adapter/postgres"
 	"github.com/G0tem/go-service-layout/internal/apple/adapter/redis"

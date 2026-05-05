@@ -7,12 +7,6 @@ import (
 	"time"
 
 	"github.com/G0tem/go-service-layout/config"
-	"github.com/G0tem/go-service-layout/internal/apple/adapter/kafka_producer"
-	"github.com/G0tem/go-service-layout/internal/apple/adapter/postgres"
-	"github.com/G0tem/go-service-layout/internal/apple/adapter/redis"
-	"github.com/G0tem/go-service-layout/internal/apple/controller/http_router"
-	"github.com/G0tem/go-service-layout/internal/apple/controller/kafka_consumer"
-	"github.com/G0tem/go-service-layout/internal/apple/usecase"
 	"github.com/G0tem/go-service-layout/pkg/healthcheck"
 	"github.com/G0tem/go-service-layout/pkg/http_server"
 	jwt "github.com/G0tem/go-service-layout/pkg/jwt"
@@ -85,7 +79,7 @@ func Run(ctx context.Context, c config.Config) (err error) {
 	healthChecker.Start()
 	defer healthChecker.Stop()
 
-	// Rate limiting middleware - MUST be registered BEFORE routes
+	// Rate limiting middleware
 	if c.RateLimit.Enabled {
 		deps.RouterHTTP.Use(ratelimit.RateLimiterMiddleware(c.RateLimit))
 		log.Info().
