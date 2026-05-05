@@ -2,10 +2,12 @@ package http_server
 
 import (
 	"context"
-	"github.com/rs/zerolog/log"
+	"fmt"
 	"net"
 	"net/http"
 	"time"
+
+	"github.com/rs/zerolog/log"
 )
 
 type Config struct {

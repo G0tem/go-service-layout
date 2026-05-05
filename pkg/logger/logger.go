@@ -21,8 +21,9 @@ func Init(c Config) {
 
 	level, err := zerolog.ParseLevel(c.Level)
 	if err != nil {
-		zerolog.SetGlobalLevel(level)
+		level = zerolog.InfoLevel // fallback по умолчанию
 	}
+	zerolog.SetGlobalLevel(level)
 
 	log.Logger = log.With().
 		Caller().

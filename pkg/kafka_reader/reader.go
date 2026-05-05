@@ -1,6 +1,9 @@
 package kafka_reader
 
 import (
+	"context"
+	"fmt"
+
 	"github.com/rs/zerolog/log"
 	"github.com/segmentio/kafka-go"
 )
@@ -32,7 +35,7 @@ func (r *Reader) Shutdown(ctx context.Context) error {
 
 	done := make(chan error, 1)
 	go func() {
-			done <- r.Reader.Close()
+		done <- r.Reader.Close()
 	}()
 
 	select {
