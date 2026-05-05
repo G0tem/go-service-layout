@@ -9,7 +9,7 @@ import (
 	"github.com/G0tem/go-service-layout/internal/apple/usecase"
 )
 
-func AppleDomain(d Dependencies) {
+func AppleDomain(d Dependencies, ctx context.Context) {
 	appleUseCase := usecase.New(
 		postgres.New(d.Postgres.Pool),
 		kafka_producer.New(d.KafkaWriter.Writer),
@@ -19,5 +19,5 @@ func AppleDomain(d Dependencies) {
 
 	http_router.AppleRouter(d.RouterHTTP, appleUseCase)
 
-	go kafka_consumer.AppleConsumer(d.KafkaReader, appleUseCase)
+	go kafka_consumer.AppleConsumer(ctx, d.KafkaReader, appleUseCase)
 }
