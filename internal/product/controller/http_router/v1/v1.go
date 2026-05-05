@@ -1,6 +1,6 @@
 package v1
 
-import "github.com/G0tem/go-service-layout/internal/apple/usecase"
+import "github.com/G0tem/go-service-layout/internal/product/usecase"
 
 type Handlers struct {
 	uc *usecase.UseCase

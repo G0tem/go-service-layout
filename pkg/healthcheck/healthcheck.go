@@ -11,7 +11,7 @@ import (
 )
 
 type Config struct {
-	URL              string        `envconfig:"HEALTHCHECK_URL" default:"http://app:8080/api/v1/healthz"`
+	URL              string        `envconfig:"HEALTHCHECK_URL" default:"http://app:8080/healthz"`
 	Interval         time.Duration `envconfig:"HEALTHCHECK_INTERVAL" default:"30s"`
 	Timeout          time.Duration `envconfig:"HEALTHCHECK_TIMEOUT" default:"5s"`
 	FailureThreshold int           `envconfig:"HEALTHCHECK_FAILURE_THRESHOLD" default:"3"`

@@ -3,7 +3,7 @@ package usecase
 import (
 	"context"
 
-	"github.com/G0tem/go-service-layout/internal/apple/entity"
+	"github.com/G0tem/go-service-layout/internal/product/entity"
 	jwt "github.com/G0tem/go-service-layout/pkg/jwt"
 	"github.com/google/uuid"
 )

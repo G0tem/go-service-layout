@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/G0tem/go-service-layout/internal/apple/entity"
+	"github.com/G0tem/go-service-layout/internal/product/entity"
 	"github.com/G0tem/go-service-layout/pkg/otel/tracer"
 	"github.com/doug-martin/goqu/v9"
 )

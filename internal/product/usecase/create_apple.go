@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/G0tem/go-service-layout/internal/apple/dto"
-	"github.com/G0tem/go-service-layout/internal/apple/entity"
+	"github.com/G0tem/go-service-layout/internal/product/dto"
+	"github.com/G0tem/go-service-layout/internal/product/entity"
 	"github.com/G0tem/go-service-layout/pkg/otel/tracer"
 	"github.com/google/uuid"
 )

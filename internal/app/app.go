@@ -13,7 +13,6 @@ import (
 	"github.com/G0tem/go-service-layout/pkg/kafka_reader"
 	"github.com/G0tem/go-service-layout/pkg/kafka_writer"
 	"github.com/G0tem/go-service-layout/pkg/postgres"
-	"github.com/G0tem/go-service-layout/pkg/ratelimit"
 	"github.com/G0tem/go-service-layout/pkg/redis"
 	"github.com/G0tem/go-service-layout/pkg/router"
 	"github.com/gin-gonic/gin"
@@ -69,7 +68,7 @@ func Run(ctx context.Context, c config.Config) (err error) {
 	defer deps.KafkaReader.Close()
 
 	// Domains
-	AppleDomain(deps, ctx)
+	ProductDomain(deps, c.RateLimit, ctx)
 
 	httpServer := http_server.New(deps.RouterHTTP, c.HTTP.Port)
 	defer httpServer.Close()
@@ -78,15 +77,6 @@ func Run(ctx context.Context, c config.Config) (err error) {
 	healthChecker := healthcheck.New(c.HealthCheck)
 	healthChecker.Start()
 	defer healthChecker.Stop()
-
-	// Rate limiting middleware
-	if c.RateLimit.Enabled {
-		deps.RouterHTTP.Use(ratelimit.RateLimiterMiddleware(c.RateLimit))
-		log.Info().
-			Int("rps", c.RateLimit.RequestsPerSecond).
-			Int("burst", c.RateLimit.Burst).
-			Msg("Rate limiting enabled")
-	}
 
 	waiting(ctx, httpServer, healthChecker, deps.KafkaReader)
 

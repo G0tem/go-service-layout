@@ -3,12 +3,12 @@ package kafka_consumer
 import (
 	"context"
 
-	"github.com/G0tem/go-service-layout/internal/apple/usecase"
+	"github.com/G0tem/go-service-layout/internal/product/usecase"
 	"github.com/G0tem/go-service-layout/pkg/kafka_reader"
 	"github.com/rs/zerolog/log"
 )
 
-func AppleConsumer(ctx context.Context, reader *kafka_reader.Reader, uc *usecase.UseCase) {
+func ProductConsumer(ctx context.Context, reader *kafka_reader.Reader, uc *usecase.UseCase) {
 	for {
 		select {
 		case <-ctx.Done():
@@ -19,7 +19,7 @@ func AppleConsumer(ctx context.Context, reader *kafka_reader.Reader, uc *usecase
 
 		m, err := reader.FetchMessage(ctx)
 		if err != nil {
-			log.Error().Err(err).Msg("kafka_consumer.AppleConsumer: reader.FetchMessage")
+			log.Error().Err(err).Msg("kafka_consumer.ProductConsumer: reader.FetchMessage")
 			return
 		}
 
@@ -31,10 +31,10 @@ func AppleConsumer(ctx context.Context, reader *kafka_reader.Reader, uc *usecase
 			Int64("offset", m.Offset).
 			Str("key", string(m.Key)).
 			Str("value", string(m.Value)).
-			Msg("kafka_consumer.AppleConsumer: reader.FetchMessage")
+			Msg("kafka_consumer.ProductConsumer: reader.FetchMessage")
 
 		if err = reader.CommitMessages(ctx, m); err != nil {
-			log.Error().Err(err).Msg("kafka_consumer.AppleConsumer: reader.CommitMessages")
+			log.Error().Err(err).Msg("kafka_consumer.ProductConsumer: reader.CommitMessages")
 		}
 	}
 }
