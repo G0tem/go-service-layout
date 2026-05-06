@@ -17,7 +17,6 @@ type Config struct {
 
 func Init(c Config) {
 	zerolog.TimeFieldFormat = time.RFC3339
-	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 
 	level, err := zerolog.ParseLevel(c.Level)
 	if err != nil {
