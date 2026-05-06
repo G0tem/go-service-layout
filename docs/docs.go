@@ -294,7 +294,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/pineapple/create_pineapple/{id}": {
+        "/pineapple/create_pineapple": {
             "post": {
                 "description": "Create Pineapple",
                 "consumes": [
