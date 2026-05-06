@@ -1,38 +1,15 @@
 package http_router
 
 import (
-	"net/http"
-
 	ver1 "github.com/G0tem/go-service-layout/internal/product/controller/http_router/v1"
 	"github.com/G0tem/go-service-layout/internal/product/usecase"
 	"github.com/G0tem/go-service-layout/pkg/jwt"
 	"github.com/G0tem/go-service-layout/pkg/ratelimit"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
 
 func ProductRouter(r *gin.Engine, uc *usecase.UseCase, cfgRatelimit ratelimit.Config) {
-	// otelgin
-	r.Use(otelgin.Middleware("Product"))
-
-	// группа для Health check и Swagger UI
-	systemGroup := r.Group("/")
-
-	// Health check
-	systemGroup.GET("/healthz", func(c *gin.Context) {
-		c.String(http.StatusOK, "ok")
-	})
-
-	// Swagger UI (доступен на /swagger/index.html)
-	systemGroup.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
-		ginSwagger.URL("/swagger/doc.json"),     // URL для загрузки swagger.json
-		ginSwagger.DefaultModelsExpandDepth(-1), // скрыть модели по умолчанию
-	))
-
-	// эндпоинты с логикой
 	v1Group := r.Group("/api/v1")
 
 	// Rate limiting middleware
@@ -47,16 +24,12 @@ func ProductRouter(r *gin.Engine, uc *usecase.UseCase, cfgRatelimit ratelimit.Co
 	// Handlers
 	v1Handler := ver1.New(uc)
 
-	// Group pineapples
 	applesGroupNoJwt := v1Group.Group("/pineapple")
-
 	// No JWT Auth middleware
 	applesGroupNoJwt.POST("/create_pineapple", v1Handler.CreatePineapple) // POST /api/v1/pineapple/create_pineapple
 	applesGroupNoJwt.GET("/get_pineapple/:id", v1Handler.GetPineapple)    // GET /api/v1/pineapple/get_pineapple/{id}
 
-	// Group apples
 	applesGroup := v1Group.Group("/apples")
-
 	// JWT Auth middleware
 	applesGroup.Use(jwt.JWTAuth(uc.GetTokenManager()))
 	applesGroup.POST("/create_apple", v1Handler.CreateApple)       // POST /api/v1/apples/create_apple
