@@ -197,7 +197,7 @@ paths:
       summary: UpdateApple
       tags:
       - apple
-  /pineapple/create_pineapple/{id}:
+  /pineapple/create_pineapple:
     post:
       consumes:
       - application/json
