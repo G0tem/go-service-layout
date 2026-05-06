@@ -25,11 +25,6 @@ func (u *UseCase) CreatePineApple(ctx context.Context, _ dto.CreatePineAppleInpu
 
 	defer transaction.Rollback(ctx)
 
-	err = u.postgres.CreateApple(ctx, entity.Apple{})
-	if err != nil {
-		return output, fmt.Errorf("u.postgres.CreateApple: %w", err)
-	}
-
 	err = u.postgres.CreatePineApple(ctx, entity.PineApple{})
 	if err != nil {
 		return output, fmt.Errorf("u.postgres.CreatePineApple: %w", err)
