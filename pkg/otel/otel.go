@@ -59,8 +59,8 @@ func Init(ctx context.Context, c Config) error {
 			semconv.SchemaURL,
 			semconv.ServiceNameKey.String(c.AppName),
 			semconv.ServiceNamespaceKey.String(c.Namespace),
-			semconv.ServiceInstanceIDKey.String(c.Namespace),
-			semconv.ServiceVersionKey.String(c.Namespace),
+			semconv.ServiceInstanceIDKey.String(c.InstanceID),
+			semconv.ServiceVersionKey.String(c.AppVersion),
 		)),
 	)
 
