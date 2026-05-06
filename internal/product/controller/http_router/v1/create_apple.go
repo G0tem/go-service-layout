@@ -13,7 +13,7 @@ import (
 )
 
 // @Summary CreateApple
-// @Description Creates Apple
+// @Description Create Apple
 // @Tags apple
 // @Accept json
 // @Produce json

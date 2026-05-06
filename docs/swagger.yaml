@@ -5,6 +5,11 @@ definitions:
       name:
         type: string
     type: object
+  dto.CreatePineAppleInput:
+    properties:
+      name:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -23,7 +28,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Creates Apple
+      description: Create Apple
       parameters:
       - description: Apple creation payload
         in: body
@@ -192,6 +197,89 @@ paths:
       summary: UpdateApple
       tags:
       - apple
+  /pineapple/create_pineapple/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Create Pineapple
+      parameters:
+      - description: Pineapple creation payload
+        in: body
+        name: peoduct
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreatePineAppleInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'status: Pineapple'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: invalid payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: CreatePineapple
+      tags:
+      - pineapple
+  /pineapple/get_pineapple/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get Pineapple
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'status: Pineapple'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: invalid payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: GetPineapple
+      tags:
+      - pineapple
 schemes:
 - http
 - https
