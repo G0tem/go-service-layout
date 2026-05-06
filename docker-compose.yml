@@ -211,9 +211,9 @@ services:
       - go-service-layout-network
 
   loki:
-    image: grafana/loki:latest
+    image: grafana/loki:3.0.0
     container_name: loki
-    command: -config.file=/etc/loki/config.yaml
+    command: ["--config.file=/etc/loki/config.yaml"]
     ports:
       - "3100:3100"
     volumes:

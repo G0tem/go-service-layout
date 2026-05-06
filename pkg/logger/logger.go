@@ -20,7 +20,7 @@ func Init(c Config) {
 
 	level, err := zerolog.ParseLevel(c.Level)
 	if err != nil {
-		level = zerolog.InfoLevel // fallback по умолчанию
+		level = zerolog.InfoLevel
 	}
 	zerolog.SetGlobalLevel(level)
 
