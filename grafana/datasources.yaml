@@ -13,6 +13,9 @@ datasources:
     editable: false
     jsonData:
       httpMethod: GET
+      manageAlerts: true
+      prometheusType: Prometheus
+      
   - name: Tempo
     type: tempo
     access: proxy
@@ -22,9 +25,66 @@ datasources:
     isDefault: true
     version: 1
     editable: false
-    apiVersion: 1
     uid: tempo
     jsonData:
       httpMethod: GET
       serviceMap:
         datasourceUid: prometheus
+      nodeGraph:
+        enabled: true
+      lokiSearch:
+        datasourceUid: loki
+      tracesToLogsV2:
+        datasourceUid: loki
+        tags: ['app_name', 'service_namespace']
+        mappedTags: [{ key: 'service.name', value: 'app_name' }]
+        mapTagNamesEnabled: true
+        spanStartTimeShift: '5m'
+        spanEndTimeShift: '5m'
+        filterByTraceID: true
+        filterBySpanID: false
+        
+  - name: Loki
+    type: loki
+    access: proxy
+    orgId: 1
+    url: http://loki:3100
+    basicAuth: false
+    isDefault: false
+    version: 1
+    editable: false
+    uid: loki
+    jsonData:
+      maxLines: 1000
+      derivedFields:
+        - datasourceUid: tempo
+          matcherRegex: "trace_id=(\\w+)"
+          name: TraceID
+          url: "$${__value.raw}"
+  # - name: Prometheus
+  #   type: prometheus
+  #   uid: prometheus
+  #   access: proxy
+  #   orgId: 1
+  #   url: http://prometheus:9090
+  #   basicAuth: false
+  #   isDefault: false
+  #   version: 1
+  #   editable: false
+  #   jsonData:
+  #     httpMethod: GET
+  # - name: Tempo
+  #   type: tempo
+  #   access: proxy
+  #   orgId: 1
+  #   url: http://tempo:3200
+  #   basicAuth: false
+  #   isDefault: true
+  #   version: 1
+  #   editable: false
+  #   apiVersion: 1
+  #   uid: tempo
+  #   jsonData:
+  #     httpMethod: GET
+  #     serviceMap:
+  #       datasourceUid: prometheus
