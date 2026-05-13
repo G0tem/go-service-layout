@@ -17,7 +17,15 @@
 1) Команда ```cp .env.template .env```
 2) Команда ```make up```
 
+## Сваггер
+
+`http://localhost:8080/swagger/index.html`
+
 ## Графана мониторинг  
 Источник данных: prometheus, loki    
 скриншот  
 <img src="grafana.png" alt="Grafana Dashboard" width="1000"/>
+
+## Тесты
+
+`go test ./internal/product/usecase/... -`
