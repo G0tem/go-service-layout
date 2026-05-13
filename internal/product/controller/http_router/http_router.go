@@ -30,10 +30,10 @@ func ProductRouter(r *gin.Engine, uc *usecase.UseCase, cfgRatelimit ratelimit.Co
 	applesGroupNoJwt.GET("/get_pineapple/:id", v1Handler.GetPineapple)    // GET /api/v1/pineapple/get_pineapple/{id}
 
 	applesGroup := v1Group.Group("/apples")
+	applesGroup.POST("/create_apple", v1Handler.CreateApple) // POST /api/v1/apples/create_apple
+	applesGroup.GET("/get_apple/:id", v1Handler.GetApple)    // GET /api/v1/apples/get_apple/{id}
 	// JWT Auth middleware
 	applesGroup.Use(jwt.JWTAuth(uc.GetTokenManager()))
-	applesGroup.POST("/create_apple", v1Handler.CreateApple)       // POST /api/v1/apples/create_apple
-	applesGroup.GET("/get_apple/:id", v1Handler.GetApple)          // GET /api/v1/apples/get_apple/{id}
 	applesGroup.PUT("/update_apple/:id", v1Handler.UpdateApple)    // PUT /api/v1/apples/update_apple/{id}
 	applesGroup.DELETE("/delete_apple/:id", v1Handler.DeleteApple) // DELETE /api/v1/apples/delete_apple/{id}
 }
