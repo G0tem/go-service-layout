@@ -8,6 +8,7 @@ import (
 	"github.com/G0tem/go-service-layout/internal/product/entity"
 	"github.com/G0tem/go-service-layout/pkg/otel/tracer"
 	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
 )
 
 func (u *UseCase) CreateApple(ctx context.Context, input dto.CreateAppleInput) (dto.CreateAppleOutput, error) {
@@ -21,6 +22,13 @@ func (u *UseCase) CreateApple(ctx context.Context, input dto.CreateAppleInput) (
 		Name:   input.Name,
 		Status: entity.StatusNew,
 	}
+
+	log := log.Ctx(ctx)
+
+	log.Info().
+		Str("apple_id", a.ID.String()).
+		Str("name", a.Name).
+		Msg("CreateApple started")
 
 	err := u.postgres.CreateApple(ctx, a)
 	if err != nil {
@@ -43,6 +51,10 @@ func (u *UseCase) CreateApple(ctx context.Context, input dto.CreateAppleInput) (
 	}
 
 	output.ID = a.ID
+
+	log.Info().
+		Str("apple_id", a.ID.String()).
+		Msg("CreateApple completed")
 
 	return output, nil
 }

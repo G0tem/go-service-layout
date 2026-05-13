@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 
+	"github.com/G0tem/go-service-layout/pkg/logger"
 	"github.com/G0tem/go-service-layout/pkg/prometheus"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -13,10 +14,10 @@ import (
 
 func New() *gin.Engine {
 	r := gin.New()
-	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
-	r.Use(prometheus.PrometheusMiddleware())
 	r.Use(otelgin.Middleware("go-service-layout"))
+	r.Use(logger.GinTraceLogger())
+	r.Use(prometheus.PrometheusMiddleware())
 
 	r.GET("/live", probe)
 	r.GET("/ready", probe)

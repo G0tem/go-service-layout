@@ -6,10 +6,10 @@ import (
 
 	"github.com/G0tem/go-service-layout/internal/product/dto"
 	"github.com/G0tem/go-service-layout/internal/product/entity"
+	"github.com/G0tem/go-service-layout/pkg/logger"
 	"github.com/G0tem/go-service-layout/pkg/otel/tracer"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/rs/zerolog/log"
 )
 
 // @Summary GetApple
@@ -28,6 +28,8 @@ func (h *Handlers) GetApple(c *gin.Context) {
 	ctx, span := tracer.Start(c.Request.Context(), "http/v1 GetApple")
 	defer span.End()
 
+	log := logger.Ctx(c)
+
 	var (
 		input dto.GetAppleInput
 		err   error
@@ -37,7 +39,7 @@ func (h *Handlers) GetApple(c *gin.Context) {
 
 	input.ID, err = uuid.Parse(id)
 	if err != nil {
-		log.Error().Err(err).Msg("uuid.Parse")
+		log.Error().Err(err).Str("id_raw", id).Msg("uuid.Parse")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "uuid validate error"})
 		return
 	}

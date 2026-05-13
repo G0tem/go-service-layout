@@ -24,7 +24,10 @@ func (p *Producer) CreateEvent(ctx context.Context, e entity.CreateEvent) error 
 		return fmt.Errorf("p.writer.WriteMessages: %w", err)
 	}
 
-	log.Debug().Msg("CreateEvent Kafka")
+	log.Ctx(ctx).Debug().
+		Str("apple_id", e.ID.String()).
+		Str("name", e.Name).
+		Msg("CreateEvent Kafka")
 
 	return nil
 }

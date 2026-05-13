@@ -6,9 +6,9 @@ import (
 
 	"github.com/G0tem/go-service-layout/internal/product/dto"
 	"github.com/G0tem/go-service-layout/internal/product/entity"
+	"github.com/G0tem/go-service-layout/pkg/logger"
 	"github.com/G0tem/go-service-layout/pkg/otel/tracer"
 	"github.com/gin-gonic/gin"
-	"github.com/rs/zerolog/log"
 	"go.opentelemetry.io/otel/attribute"
 )
 
@@ -27,6 +27,8 @@ import (
 func (h *Handlers) CreateApple(c *gin.Context) {
 	ctx, span := tracer.Start(c.Request.Context(), "http/v1 CreateApple")
 	defer span.End()
+
+	log := logger.Ctx(c)
 
 	input := dto.CreateAppleInput{}
 
