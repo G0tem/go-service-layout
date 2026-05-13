@@ -2,6 +2,7 @@ package tracer
 
 import (
 	"context"
+
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
@@ -13,6 +14,9 @@ func Init(t trace.Tracer) {
 }
 
 func Start(ctx context.Context, spanName string, opts ...trace.SpanStartOption) (context.Context, trace.Span) {
+	if tracer == nil {
+		return ctx, trace.SpanFromContext(ctx)
+	}
 	return tracer.Start(ctx, spanName, opts...)
 }
 
