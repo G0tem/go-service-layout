@@ -37,16 +37,17 @@ func SilentModeInit() {
 }
 
 func Init(ctx context.Context, c Config) error {
-	if c.Endpoint == "" {
-		SilentModeInit()
-	}
-
 	prop := propagation.NewCompositeTextMapPropagator(
 		propagation.TraceContext{},
 		propagation.Baggage{},
 	)
 
 	otel.SetTextMapPropagator(prop)
+
+	if c.Endpoint == "" {
+		SilentModeInit()
+		return nil
+	}
 
 	traceExporter, err := otlptracegrpc.New(ctx, otlptracegrpc.WithEndpoint(c.Endpoint), otlptracegrpc.WithInsecure())
 	if err != nil {
