@@ -17,7 +17,6 @@ import (
 // @Tags apple
 // @Accept json
 // @Produce json
-// @Security BearerAuth
 // @Param id path string true "ID"
 // @Success 200 {object} map[string]string "status: Apple"
 // @Failure 400 {object} map[string]string "invalid payload"

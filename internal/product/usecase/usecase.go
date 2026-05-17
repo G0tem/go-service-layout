@@ -11,6 +11,8 @@ import (
 type Postgres interface {
 	CreateApple(ctx context.Context, a entity.Apple) (err error)
 	GetApple(ctx context.Context, id uuid.UUID) (entity.Apple, error)
+	UpdateApple(ctx context.Context, a entity.Apple) (err error)
+	DeleteApple(ctx context.Context, id uuid.UUID) error
 
 	CreatePineApple(ctx context.Context, p entity.PineApple) (err error)
 }

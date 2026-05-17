@@ -10,6 +10,11 @@ definitions:
       name:
         type: string
     type: object
+  dto.UpdateAppleInput:
+    properties:
+      name:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -63,8 +68,6 @@ paths:
             additionalProperties:
               type: string
             type: object
-      security:
-      - BearerAuth: []
       summary: CreateApple
       tags:
       - apple
@@ -106,8 +109,6 @@ paths:
             additionalProperties:
               type: string
             type: object
-      security:
-      - BearerAuth: []
       summary: DeleteApple
       tags:
       - apple
@@ -149,8 +150,6 @@ paths:
             additionalProperties:
               type: string
             type: object
-      security:
-      - BearerAuth: []
       summary: GetApple
       tags:
       - apple
@@ -165,6 +164,12 @@ paths:
         name: id
         required: true
         type: string
+      - description: Apple update payload
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateAppleInput'
       produces:
       - application/json
       responses:
@@ -192,8 +197,6 @@ paths:
             additionalProperties:
               type: string
             type: object
-      security:
-      - BearerAuth: []
       summary: UpdateApple
       tags:
       - apple
@@ -236,6 +239,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: CreatePineapple
       tags:
       - pineapple
@@ -277,6 +282,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: GetPineapple
       tags:
       - pineapple

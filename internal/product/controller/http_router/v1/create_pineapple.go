@@ -12,6 +12,7 @@ import (
 // @Tags pineapple
 // @Accept json
 // @Produce json
+// @Security BearerAuth
 // @Param peoduct body dto.CreatePineAppleInput true "Pineapple creation payload"
 // @Success 200 {object} map[string]string "status: Pineapple"
 // @Failure 400 {object} map[string]string "invalid payload"

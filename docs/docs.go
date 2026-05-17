@@ -26,11 +26,6 @@ const docTemplate = `{
     "paths": {
         "/apples/create_apple": {
             "post": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "description": "Create Apple",
                 "consumes": [
                     "application/json"
@@ -95,11 +90,6 @@ const docTemplate = `{
         },
         "/apples/delete_apple/{id}": {
             "delete": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "description": "Delete Apple",
                 "consumes": [
                     "application/json"
@@ -162,11 +152,6 @@ const docTemplate = `{
         },
         "/apples/get_apple/{id}": {
             "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "description": "Get Apple",
                 "consumes": [
                     "application/json"
@@ -229,11 +214,6 @@ const docTemplate = `{
         },
         "/apples/update_apple/{id}": {
             "put": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
                 "description": "Update Apple",
                 "consumes": [
                     "application/json"
@@ -252,6 +232,15 @@ const docTemplate = `{
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "Apple update payload",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateAppleInput"
+                        }
                     }
                 ],
                 "responses": {
@@ -296,6 +285,11 @@ const docTemplate = `{
         },
         "/pineapple/create_pineapple": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create Pineapple",
                 "consumes": [
                     "application/json"
@@ -360,6 +354,11 @@ const docTemplate = `{
         },
         "/pineapple/get_pineapple/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get Pineapple",
                 "consumes": [
                     "application/json"
@@ -431,6 +430,14 @@ const docTemplate = `{
             }
         },
         "dto.CreatePineAppleInput": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateAppleInput": {
             "type": "object",
             "properties": {
                 "name": {

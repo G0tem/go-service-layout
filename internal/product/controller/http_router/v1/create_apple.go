@@ -17,7 +17,6 @@ import (
 // @Tags apple
 // @Accept json
 // @Produce json
-// @Security BearerAuth
 // @Param peoduct body dto.CreateAppleInput true "Apple creation payload"
 // @Success 201 {object} map[string]string "status: Apple created"
 // @Failure 400 {object} map[string]string "invalid payload"
