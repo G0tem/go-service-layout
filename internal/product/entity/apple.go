@@ -5,8 +5,9 @@ import (
 )
 
 const (
-	StatusNew   = "new"
-	StatusError = "error"
+	StatusNew    = "new"
+	StatusUpdate = "update"
+	StatusError  = "error"
 )
 
 type Apple struct {

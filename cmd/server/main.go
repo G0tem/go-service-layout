@@ -11,7 +11,6 @@ import (
 	"github.com/G0tem/go-service-layout/internal/app"
 	"github.com/G0tem/go-service-layout/pkg/logger"
 	"github.com/G0tem/go-service-layout/pkg/otel"
-	"github.com/G0tem/go-service-layout/pkg/sentry"
 	"github.com/rs/zerolog/log"
 	_ "go.uber.org/automaxprocs"
 )
@@ -57,13 +56,6 @@ func main() {
 	}
 
 	logger.Init(c.Logger)
-
-	err = sentry.Init(c.Sentry)
-	if err != nil {
-		log.Error().Err(err).Msg("sentry.Init")
-	}
-
-	defer sentry.Close()
 
 	err = otel.Init(ctx, c.OTEL)
 	if err != nil {

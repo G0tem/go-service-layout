@@ -13,7 +13,6 @@ import (
 	"github.com/G0tem/go-service-layout/pkg/postgres"
 	"github.com/G0tem/go-service-layout/pkg/ratelimit"
 	"github.com/G0tem/go-service-layout/pkg/redis"
-	"github.com/G0tem/go-service-layout/pkg/sentry"
 	"github.com/kelseyhightower/envconfig"
 )
 
@@ -30,7 +29,6 @@ type Config struct {
 	KafkaWriter kafka_writer.Config
 	Redis       redis.Config
 	Logger      logger.Config
-	Sentry      sentry.Config
 	OTEL        otel.Config
 	JWT         jwt.Config
 	HealthCheck healthcheck.Config

@@ -29,6 +29,16 @@ func (m *MockPostgres) GetApple(ctx context.Context, id uuid.UUID) (entity.Apple
 	return args.Get(0).(entity.Apple), args.Error(1)
 }
 
+func (m *MockPostgres) UpdateApple(ctx context.Context, a entity.Apple) error {
+	args := m.Called(ctx, a)
+	return args.Error(0)
+}
+
+func (m *MockPostgres) DeleteApple(ctx context.Context, id uuid.UUID) error {
+	args := m.Called(ctx, id)
+	return args.Error(0)
+}
+
 func (m *MockPostgres) CreatePineApple(ctx context.Context, p entity.PineApple) error {
 	args := m.Called(ctx, p)
 	return args.Error(0)
