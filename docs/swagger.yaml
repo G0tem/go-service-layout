@@ -5,7 +5,7 @@ definitions:
       name:
         type: string
     type: object
-  dto.CreatePineAppleInput:
+  dto.CreatePlantInput:
     properties:
       name:
         type: string
@@ -200,23 +200,23 @@ paths:
       summary: UpdateApple
       tags:
       - apple
-  /pineapple/create_pineapple:
+  /plant/create_plant:
     post:
       consumes:
       - application/json
-      description: Create Pineapple
+      description: Create CreatePlant
       parameters:
-      - description: Pineapple creation payload
+      - description: Plant creation payload
         in: body
         name: peoduct
         required: true
         schema:
-          $ref: '#/definitions/dto.CreatePineAppleInput'
+          $ref: '#/definitions/dto.CreatePlantInput'
       produces:
       - application/json
       responses:
         "200":
-          description: 'status: Pineapple'
+          description: 'status: Plant'
           schema:
             additionalProperties:
               type: string
@@ -241,14 +241,14 @@ paths:
             type: object
       security:
       - BearerAuth: []
-      summary: CreatePineapple
+      summary: CreatePlant
       tags:
-      - pineapple
-  /pineapple/get_pineapple/{id}:
+      - plant
+  /plant/get_plant/{id}:
     get:
       consumes:
       - application/json
-      description: Get Pineapple
+      description: Get GetPlant
       parameters:
       - description: ID
         in: path
@@ -259,7 +259,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: 'status: Pineapple'
+          description: 'status: Plant'
           schema:
             additionalProperties:
               type: string
@@ -284,9 +284,9 @@ paths:
             type: object
       security:
       - BearerAuth: []
-      summary: GetPineapple
+      summary: GetPlant
       tags:
-      - pineapple
+      - plant
 schemes:
 - http
 - https

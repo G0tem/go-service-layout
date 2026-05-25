@@ -7,20 +7,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary CreatePineapple
-// @Description Create Pineapple
-// @Tags pineapple
+// @Summary CreatePlant
+// @Description Create CreatePlant
+// @Tags plant
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param peoduct body dto.CreatePineAppleInput true "Pineapple creation payload"
-// @Success 200 {object} map[string]string "status: Pineapple"
+// @Param peoduct body dto.CreatePlantInput true "Plant creation payload"
+// @Success 200 {object} map[string]string "status: Plant"
 // @Failure 400 {object} map[string]string "invalid payload"
 // @Failure 401 {object} map[string]string "unauthorized"
 // @Failure 500 {object} map[string]string "internal error"
-// @Router /pineapple/create_pineapple [post]
-func (h *Handlers) CreatePineapple(c *gin.Context) {
-	_, span := tracer.Start(c.Request.Context(), "http/v1 CreatePineapple")
+// @Router /plant/create_plant [post]
+func (h *Handlers) CreatePlant(c *gin.Context) {
+	_, span := tracer.Start(c.Request.Context(), "http/v1 CreatePlant")
 	defer span.End()
 
 	c.JSON(http.StatusOK, "ok")

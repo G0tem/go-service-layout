@@ -283,14 +283,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/pineapple/create_pineapple": {
+        "/plant/create_plant": {
             "post": {
                 "security": [
                     {
                         "BearerAuth": []
                     }
                 ],
-                "description": "Create Pineapple",
+                "description": "Create CreatePlant",
                 "consumes": [
                     "application/json"
                 ],
@@ -298,23 +298,23 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "pineapple"
+                    "plant"
                 ],
-                "summary": "CreatePineapple",
+                "summary": "CreatePlant",
                 "parameters": [
                     {
-                        "description": "Pineapple creation payload",
+                        "description": "Plant creation payload",
                         "name": "peoduct",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreatePineAppleInput"
+                            "$ref": "#/definitions/dto.CreatePlantInput"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "status: Pineapple",
+                        "description": "status: Plant",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -352,14 +352,14 @@ const docTemplate = `{
                 }
             }
         },
-        "/pineapple/get_pineapple/{id}": {
+        "/plant/get_plant/{id}": {
             "get": {
                 "security": [
                     {
                         "BearerAuth": []
                     }
                 ],
-                "description": "Get Pineapple",
+                "description": "Get GetPlant",
                 "consumes": [
                     "application/json"
                 ],
@@ -367,9 +367,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "pineapple"
+                    "plant"
                 ],
-                "summary": "GetPineapple",
+                "summary": "GetPlant",
                 "parameters": [
                     {
                         "type": "string",
@@ -381,7 +381,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "status: Pineapple",
+                        "description": "status: Plant",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -429,7 +429,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.CreatePineAppleInput": {
+        "dto.CreatePlantInput": {
             "type": "object",
             "properties": {
                 "name": {
