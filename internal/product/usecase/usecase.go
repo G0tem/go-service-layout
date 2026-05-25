@@ -14,7 +14,7 @@ type Postgres interface {
 	UpdateApple(ctx context.Context, a entity.Apple) (err error)
 	DeleteApple(ctx context.Context, id uuid.UUID) error
 
-	CreatePineApple(ctx context.Context, p entity.PineApple) (err error)
+	CreatePlant(ctx context.Context, p entity.Plant) (err error)
 }
 
 type Kafka interface {
@@ -24,6 +24,9 @@ type Kafka interface {
 type Redis interface {
 	GetApple(ctx context.Context, id uuid.UUID) (entity.Apple, error)
 	PutApple(ctx context.Context, a entity.Apple) error
+
+	GetPlant(ctx context.Context, id uuid.UUID) (entity.Plant, error)
+	PutPlant(ctx context.Context, a entity.Plant) error
 }
 
 type UseCase struct {
