@@ -28,4 +28,4 @@
 
 ## Тесты
 
-`go test ./internal/product/usecase/... -`
+`go test ./internal/product/usecase/... -v`
