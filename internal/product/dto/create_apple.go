@@ -10,12 +10,17 @@ type CreateAppleOutput struct {
 }
 
 type CreateAppleInput struct {
-	Name string `json:"name"`
+	Name    string    `json:"name"`
+	PlantID uuid.UUID `json:"plant_id"`
 }
 
 func (i *CreateAppleInput) Validate() error {
 	if i.Name == "" {
 		return entity.ErrNameInvalid
+	}
+
+	if i.PlantID == uuid.Nil {
+		return entity.ErrUUIDInvalid
 	}
 
 	return nil

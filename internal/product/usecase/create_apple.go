@@ -18,9 +18,10 @@ func (u *UseCase) CreateApple(ctx context.Context, input dto.CreateAppleInput) (
 	var output dto.CreateAppleOutput
 
 	a := entity.Apple{
-		ID:     uuid.New(),
-		Name:   input.Name,
-		Status: entity.StatusNew,
+		ID:      uuid.New(),
+		PlantID: input.PlantID,
+		Name:    input.Name,
+		Status:  entity.StatusNew,
 	}
 
 	log := log.Ctx(ctx)
