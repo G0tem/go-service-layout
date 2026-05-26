@@ -15,9 +15,10 @@ func (p *Postgres) CreateApple(ctx context.Context, a entity.Apple) (err error) 
 
 	dataset := goqu.Insert("apple").
 		Rows(goqu.Record{
-			"id":     a.ID,
-			"name":   a.Name,
-			"status": a.Status,
+			"id":       a.ID,
+			"name":     a.Name,
+			"plant_id": a.PlantID,
+			"status":   a.Status,
 		})
 
 	sql, _, err := dataset.ToSQL()

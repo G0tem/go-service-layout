@@ -24,12 +24,14 @@ func ProductRouter(r *gin.Engine, uc *usecase.UseCase, cfgRatelimit ratelimit.Co
 	// Handlers
 	v1Handler := ver1.New(uc)
 
-	applesGroupJwt := v1Group.Group("/plant")
+	plantGroupJwt := v1Group.Group("/plant")
 
 	// JWT Auth middleware
-	applesGroupJwt.POST("/create_plant", v1Handler.CreatePlant) // POST /api/v1/plant/create_plant
-	applesGroupJwt.GET("/get_plant/:id", v1Handler.GetPlant)    // GET /api/v1/plant/get_plant/{id}
-	applesGroupJwt.Use(jwt.JWTAuth(uc.GetTokenManager()))
+	plantGroupJwt.POST("/create_plant", v1Handler.CreatePlant)    // POST /api/v1/plant/create_plant
+	plantGroupJwt.GET("/get_plant/:id", v1Handler.GetPlant)       // GET /api/v1/plant/get_plant/{id}
+	plantGroupJwt.PUT("/update_plant/:id", v1Handler.UpdatePlant) // PUT /api/v1/plant/update_plant/{id}
+	plantGroupJwt.DELETE("/delete_plant/:id", v1Handler.DeletePlant)
+	plantGroupJwt.Use(jwt.JWTAuth(uc.GetTokenManager()))
 
 	// No JWT Auth middleware
 	applesGroup := v1Group.Group("/apples")

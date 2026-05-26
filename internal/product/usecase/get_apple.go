@@ -20,8 +20,9 @@ func (u *UseCase) GetApple(ctx context.Context, input dto.GetAppleInput) (dto.Ge
 	}
 
 	return dto.GetAppleOutput{
-		ID:     apple.ID,
-		Name:   apple.Name,
-		Status: apple.Status,
+		ID:      apple.ID,
+		Name:    apple.Name,
+		Status:  apple.Status,
+		PlantID: apple.PlantID,
 	}, err
 }

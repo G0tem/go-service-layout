@@ -11,8 +11,9 @@ const (
 )
 
 type Apple struct {
-	ID     uuid.UUID
-	Name   string
-	Status string
-	Stuffs []string
+	ID      uuid.UUID
+	PlantID uuid.UUID
+	Name    string
+	Status  string
+	Stuffs  []string
 }

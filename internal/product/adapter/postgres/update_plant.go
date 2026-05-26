@@ -9,17 +9,16 @@ import (
 	"github.com/doug-martin/goqu/v9"
 )
 
-func (p *Postgres) UpdateApple(ctx context.Context, a entity.Apple) (err error) {
-	ctx, span := tracer.Start(ctx, "postgres UpdateApple")
+func (p *Postgres) UpdatePlant(ctx context.Context, pl entity.Plant) (err error) {
+	ctx, span := tracer.Start(ctx, "postgres UpdatePlant")
 	defer span.End()
 
-	dataset := goqu.Update("apple").
+	dataset := goqu.Update("plant").
 		Set(goqu.Record{
-			"name":     a.Name,
-			"plant_id": a.PlantID,
-			"status":   a.Status,
+			"name":   string(pl.Name),
+			"status": pl.Status,
 		}).
-		Where(goqu.Ex{"id": a.ID})
+		Where(goqu.Ex{"id": pl.ID})
 
 	sql, args, err := dataset.ToSQL()
 	if err != nil {

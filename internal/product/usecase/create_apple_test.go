@@ -44,6 +44,21 @@ func (m *MockPostgres) CreatePlant(ctx context.Context, p entity.Plant) error {
 	return args.Error(0)
 }
 
+func (m *MockPostgres) GetPlant(ctx context.Context, id uuid.UUID) (entity.Plant, error) {
+	args := m.Called(ctx, id)
+	return args.Get(0).(entity.Plant), args.Error(1)
+}
+
+func (m *MockPostgres) UpdatePlant(ctx context.Context, a entity.Plant) error {
+	args := m.Called(ctx, a)
+	return args.Error(0)
+}
+
+func (m *MockPostgres) DeletePlant(ctx context.Context, id uuid.UUID) error {
+	args := m.Called(ctx, id)
+	return args.Error(0)
+}
+
 // MockKafka - моки для kafka адаптера
 type MockKafka struct {
 	mock.Mock
