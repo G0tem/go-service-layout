@@ -352,6 +352,73 @@ const docTemplate = `{
                 }
             }
         },
+        "/plant/delete_plant/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete Plant",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plant"
+                ],
+                "summary": "DeletePlant",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status: Plant delete",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "invalid payload",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/plant/get_plant/{id}": {
             "get": {
                 "security": [
@@ -418,6 +485,82 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/plant/update_plant/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update Plant",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "plant"
+                ],
+                "summary": "UpdatePlant",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Plant update payload",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdatePlantInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status: Plant",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "invalid payload",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -425,6 +568,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "name": {
+                    "type": "string"
+                },
+                "plant_id": {
                     "type": "string"
                 }
             }
@@ -438,6 +584,14 @@ const docTemplate = `{
             }
         },
         "dto.UpdateAppleInput": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdatePlantInput": {
             "type": "object",
             "properties": {
                 "name": {

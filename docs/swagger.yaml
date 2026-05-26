@@ -4,6 +4,8 @@ definitions:
     properties:
       name:
         type: string
+      plant_id:
+        type: string
     type: object
   dto.CreatePlantInput:
     properties:
@@ -11,6 +13,11 @@ definitions:
         type: string
     type: object
   dto.UpdateAppleInput:
+    properties:
+      name:
+        type: string
+    type: object
+  dto.UpdatePlantInput:
     properties:
       name:
         type: string
@@ -244,6 +251,49 @@ paths:
       summary: CreatePlant
       tags:
       - plant
+  /plant/delete_plant/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Plant
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'status: Plant delete'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: invalid payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: DeletePlant
+      tags:
+      - plant
   /plant/get_plant/{id}:
     get:
       consumes:
@@ -285,6 +335,55 @@ paths:
       security:
       - BearerAuth: []
       summary: GetPlant
+      tags:
+      - plant
+  /plant/update_plant/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update Plant
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Plant update payload
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdatePlantInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'status: Plant'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: invalid payload
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: internal error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: UpdatePlant
       tags:
       - plant
 schemes:
